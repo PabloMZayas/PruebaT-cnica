@@ -4,12 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.veracruzensei.technicalmorty.domain.model.CharacterModel
 import com.veracruzensei.technicalmorty.ui.characters.CharactersScreen
 
 @Composable
 fun NavigationBottomWrapper(
     navController: NavHostController,
-    navigateToDetailScreen: () -> Unit
+    navigateToDetailScreen: (CharacterModel) -> Unit
 ) {
 
     NavHost(navController = navController, startDestination = RoutesBottom.Characters.route) {

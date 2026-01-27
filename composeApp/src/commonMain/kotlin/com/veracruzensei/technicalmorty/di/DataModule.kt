@@ -2,6 +2,7 @@ package com.veracruzensei.technicalmorty.di
 
 import com.veracruzensei.technicalmorty.data.RepositoryImplementation
 import com.veracruzensei.technicalmorty.data.remote.ApiService
+import com.veracruzensei.technicalmorty.data.remote.paging.CharactersPagingSource
 import com.veracruzensei.technicalmorty.domain.Repository
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
@@ -28,5 +29,6 @@ val DataModule = module {
         }
     }
     factoryOf(::ApiService)
-    factory<Repository> { RepositoryImplementation(get()) }
+    factory<Repository> { RepositoryImplementation(get(), get()) }
+    factoryOf(::CharactersPagingSource)
 }

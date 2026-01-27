@@ -48,6 +48,10 @@ kotlin {
 
             //KTOR
             implementation(libs.ktor.client.okhttp)
+
+            //prueba
+            implementation("androidx.paging:paging-runtime:3.3.6")
+            implementation("androidx.paging:paging-compose:3.3.6")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -81,6 +85,10 @@ kotlin {
             //coil
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor)
+
+            //paging
+            implementation(libs.paging.compose.common)
+            implementation(libs.paging.common)
         }
         iosMain.dependencies {
             //KTOR
@@ -128,6 +136,7 @@ android {
 
 dependencies {
     implementation(libs.volley)
+    implementation(libs.androidx.paging.common.android)
     debugImplementation(compose.uiTooling)
 }
 

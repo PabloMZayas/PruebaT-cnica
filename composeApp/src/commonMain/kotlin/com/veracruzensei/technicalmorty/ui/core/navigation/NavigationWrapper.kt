@@ -12,7 +12,7 @@ fun NavigationWrapper() {
 
     val mainNavController = rememberNavController()
 
-    NavHost(navController = mainNavController, startDestination = Detail) {
+    NavHost(navController = mainNavController, startDestination = Home) {
         composable<Home> {
             HomeScreen(mainNavController = mainNavController)
         }

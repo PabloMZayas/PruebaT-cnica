@@ -1,16 +1,22 @@
 package com.veracruzensei.technicalmorty.ui.characters
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -18,14 +24,23 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.LoadState
+import app.cash.paging.compose.LazyPagingItems
+import app.cash.paging.compose.collectAsLazyPagingItems
+import coil3.compose.AsyncImage
 import com.tuempresa.tuapp.generated.resources.Res
+import com.tuempresa.tuapp.generated.resources.icon_characters
 import com.tuempresa.tuapp.generated.resources.icon_filters
 import com.tuempresa.tuapp.generated.resources.icon_menu_vertical
 import com.tuempresa.tuapp.generated.resources.icon_search
@@ -37,9 +52,11 @@ import org.koin.core.annotation.KoinExperimentalAPI
 @OptIn(KoinExperimentalAPI::class)
 @Composable
 fun CharactersScreen(
-    navigateToDetailScreen: () -> Unit
+    navigateToDetailScreen: (CharacterModel) -> Unit
 ) {
     val charactersViewModel = koinViewModel<CharactersViewModel>()
+    val state by charactersViewModel.state.collectAsState()
+    val characters = state.characters.collectAsLazyPagingItems()
 
     Column(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
@@ -47,81 +64,93 @@ fun CharactersScreen(
     ) {
         HeaderCharacters()
         SearchBarCharacters()
-        ButtonGoToDetail(navigateToDetailScreen)
-        ListCharacters(navigateToDetailScreen = navigateToDetailScreen)
+        Spacer(modifier = Modifier.size(16.dp))
+        CharactersGridList(
+            characters = characters,
+            navigateToDetail = navigateToDetailScreen
+        )
     }
 }
 
 @Composable
-fun ButtonGoToDetail(navigateToDetailScreen: () -> Unit) {
-    Button(
-        onClick = { }
-    ) {
-        Text(text = "Go to detail")
-    }
-}
-
-@Composable
-fun ListCharacters(
-    characters: List<CharacterModel> = emptyList(),
-    navigateToDetailScreen: () -> Unit
+fun CharactersGridList(
+    characters: LazyPagingItems<CharacterModel>,
+    navigateToDetail: (CharacterModel) -> Unit = {}
 ) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
+    LazyVerticalGrid(
+        modifier = Modifier.fillMaxSize(),
+        columns = GridCells.Fixed(1),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        characters.forEach { characterModel ->
-            ItemCharacterModel(characterModel)
+        when {
+            characters.loadState.refresh is LoadState.Loading && characters.itemCount == 0 -> {
+                //Initial load
+                item(span = { GridItemSpan(2) }) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator(color = Color.Green)
+                    }
+                }
+            }
+
+            characters.loadState.refresh is LoadState.NotLoading && characters.itemCount == 0 -> {
+                //Empty list
+                item {
+                    Text("No hay items")
+                }
+            }
+
+            else -> {
+                //Items
+                items(characters.itemCount) { position ->
+                    characters[position]?.let { characterModel ->
+                        CharacterItemList(characterModel) { character ->
+                            navigateToDetail(character)
+                        }
+                    }
+                }
+
+                if (characters.loadState.append is LoadState.Loading) {
+                    item(span = { GridItemSpan(2) }) {
+                        Box(
+                            modifier = Modifier.fillMaxWidth().height(100.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(Modifier.size(64.dp), color = Color.Green)
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
-fun ItemCharacterModel(characterModel: CharacterModel) {
-    Row {
-        ImageCharacter(characterModel.image)
-        Spacer(modifier = Modifier.size(8.dp))
-        Column {
-            CharacterName(name = characterModel.name)
-            Spacer(modifier = Modifier.size(8.dp))
+fun CharacterItemList(characterModel: CharacterModel, onItemSelected: (CharacterModel) -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth().clickable { onItemSelected(characterModel) },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        AsyncImage(
+            modifier = Modifier.size(56.dp).clip(shape = CircleShape),
+            model = characterModel.image,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            placeholder = painterResource(Res.drawable.icon_characters)
+        )
+        Column(modifier = Modifier.padding(start = 16.dp)) {
+            CharacterName(characterModel.name)
             CharacterStatus(characterModel.status)
         }
     }
 }
 
 @Composable
-fun ImageCharacter(image: String) {
-    Image(
-        modifier = Modifier.clip(
-            shape = CircleShape
-        ),
-        painter = painterResource(Res.drawable.icon_filters),
-        contentDescription = "image character"
-    )
-    /*AsyncImage(
-        modifier = Modifier
-            .padding(1.dp)
-            .defaultMinSize(minHeight = 30.dp)
-            .size(68.dp)
-            .clip(shape = RoundedCornerShape(15.dp))
-            .background(Color.White)
-            .padding(8.dp),
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(avatar)
-            .decoderFactory(SvgDecoder.Factory())
-            .diskCachePolicy(CachePolicy.ENABLED)
-            .build(),
-        contentDescription = null,
-        contentScale = ContentScale.FillBounds,
-        placeholder = painterResource(R.drawable.icon_chicken_serious),
-        error = painterResource(R.drawable.icon_image_day_night)
-    )*/
-}
-
-@Composable
 fun CharacterStatus(status: String) {
     Text(
         text = status,
-        fontWeight = FontWeight.Bold
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
     )
 }
 
@@ -129,7 +158,8 @@ fun CharacterStatus(status: String) {
 fun CharacterName(name: String) {
     Text(
         text = name,
-        fontWeight = FontWeight.Bold
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp
     )
 }
 
