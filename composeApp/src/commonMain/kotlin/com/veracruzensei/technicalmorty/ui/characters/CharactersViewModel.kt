@@ -1,7 +1,10 @@
 package com.veracruzensei.technicalmorty.ui.characters
 
 import androidx.lifecycle.ViewModel
+import com.veracruzensei.technicalmorty.domain.GetSingleCharacter
 
-class CharactersViewModel: ViewModel() {
+class CharactersViewModel(
+    val getSingleCharacter: GetSingleCharacter
+): ViewModel() {
 
 }

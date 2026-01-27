@@ -15,10 +15,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.veracruzensei.technicalmorty.ui.core.bottomnavigation.BottomBarItem
 import com.veracruzensei.technicalmorty.ui.core.bottomnavigation.NavigationBottomWrapper
+import com.veracruzensei.technicalmorty.ui.core.navigation.Detail
 
 @Composable
 fun HomeScreen(
-    mainNavController: NavHostController
+    mainNavController: NavHostController,
+    navigateToDetailScreen: () -> Unit = {}
 ) {
     val items = listOf(
         BottomBarItem.Menu(),
@@ -31,6 +33,7 @@ fun HomeScreen(
         Box(modifier = Modifier.padding(paddingValues)) {
             NavigationBottomWrapper(
                 bottomNavController,
+                navigateToDetailScreen = { navigateToDetailScreen() }
             )
         }
     }

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,7 +47,17 @@ fun CharactersScreen(
     ) {
         HeaderCharacters()
         SearchBarCharacters()
+        ButtonGoToDetail(navigateToDetailScreen)
         ListCharacters(navigateToDetailScreen = navigateToDetailScreen)
+    }
+}
+
+@Composable
+fun ButtonGoToDetail(navigateToDetailScreen: () -> Unit) {
+    Button(
+        onClick = { }
+    ) {
+        Text(text = "Go to detail")
     }
 }
 

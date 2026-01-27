@@ -9,7 +9,7 @@ import com.veracruzensei.technicalmorty.ui.characters.CharactersScreen
 @Composable
 fun NavigationBottomWrapper(
     navController: NavHostController,
-    navigateToDetailScreen: () -> Unit = {}
+    navigateToDetailScreen: () -> Unit
 ) {
 
     NavHost(navController = navController, startDestination = RoutesBottom.Characters.route) {

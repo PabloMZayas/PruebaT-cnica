@@ -6,14 +6,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CharacterResponse(
-    @SerialName("id") val id: String = "",
+    @SerialName("id") val id: Int = 1,
     val status: String = "dead",
     val image: String = "",
     val name: String = "",
     val species: String = "",
     val gender: String = "",
-    val origin: String = "",
-    val location: String = ""
+    //val origin: String = "",
+    //val location: String = ""
 )
 
 fun CharacterResponse.toDomain(): CharacterModel = CharacterModel(
@@ -21,8 +21,8 @@ fun CharacterResponse.toDomain(): CharacterModel = CharacterModel(
     status = this.status,
     image = this.image,
     name = this.name,
-    origin = this.origin,
-    location = this.location,
+    //origin = this.origin,
+    //location = this.location,
     gender = this.gender,
     species = this.species
 )

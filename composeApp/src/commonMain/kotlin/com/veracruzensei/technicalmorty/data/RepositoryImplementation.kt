@@ -6,7 +6,7 @@ import com.veracruzensei.technicalmorty.domain.model.CharacterModel
 import com.veracruzensei.technicalmorty.domain.Repository
 
 class RepositoryImplementation(private val api: ApiService): Repository {
-    override suspend fun getSingleCharacter(id: String): CharacterModel {
+    override suspend fun getSingleCharacter(id: Int): CharacterModel {
         return api.getSingleCharacter(id).toDomain()
     }
 }

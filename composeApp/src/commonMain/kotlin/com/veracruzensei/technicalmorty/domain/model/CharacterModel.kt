@@ -1,12 +1,12 @@
 package com.veracruzensei.technicalmorty.domain.model
 
 data class CharacterModel(
-    val id: String = "",
+    val id: Int = 1,
     val status: String = "",
     val image: String = "",
     val name: String = "",
     val species: String = "",
     val gender: String = "",
-    val origin: String = "",
-    val location: String = "",
+    //val origin: String = "",
+    //val location: String = "",
 )

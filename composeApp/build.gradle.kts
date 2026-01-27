@@ -77,6 +77,10 @@ kotlin {
 
             //Settings
             implementation("com.russhwolf:multiplatform-settings:1.1.1")
+
+            //coil
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network.ktor)
         }
         iosMain.dependencies {
             //KTOR

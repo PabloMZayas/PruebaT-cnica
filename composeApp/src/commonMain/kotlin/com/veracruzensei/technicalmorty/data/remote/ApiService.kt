@@ -7,7 +7,7 @@ import io.ktor.client.request.get
 
 class ApiService(private val client: HttpClient) {
 
-    suspend fun getSingleCharacter(id: String): CharacterResponse {
+    suspend fun getSingleCharacter(id: Int): CharacterResponse {
         return client.get("/api/character/$id").body()
     }
 
