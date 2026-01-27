@@ -1,11 +1,9 @@
 package com.veracruzensei.technicalmorty.ui.characters
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -30,12 +28,18 @@ import com.tuempresa.tuapp.generated.resources.Res
 import com.tuempresa.tuapp.generated.resources.icon_filters
 import com.tuempresa.tuapp.generated.resources.icon_menu_vertical
 import com.tuempresa.tuapp.generated.resources.icon_search
+import com.veracruzensei.technicalmorty.domain.model.CharacterModel
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun CharactersScreen(
     navigateToDetailScreen: () -> Unit
 ) {
+    val charactersViewModel = koinViewModel<CharactersViewModel>()
+
     Column(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally

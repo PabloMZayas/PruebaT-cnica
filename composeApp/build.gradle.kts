@@ -82,6 +82,11 @@ kotlin {
             //KTOR
             implementation(libs.ktor.client.darwin)
         }
+        getByName("commonTest") {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
     }
 }
 

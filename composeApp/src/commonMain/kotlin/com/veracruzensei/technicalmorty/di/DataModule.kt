@@ -1,6 +1,8 @@
 package com.veracruzensei.technicalmorty.di
 
+import com.veracruzensei.technicalmorty.data.RepositoryImplementation
 import com.veracruzensei.technicalmorty.data.remote.ApiService
+import com.veracruzensei.technicalmorty.domain.Repository
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -26,4 +28,5 @@ val DataModule = module {
         }
     }
     factoryOf(::ApiService)
+    factory<Repository> { RepositoryImplementation(get()) }
 }

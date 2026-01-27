@@ -1,5 +1,6 @@
 package com.veracruzensei.technicalmorty.data.remote.response
 
+import com.veracruzensei.technicalmorty.domain.model.CharacterModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -13,4 +14,15 @@ data class CharacterResponse(
     val gender: String = "",
     val origin: String = "",
     val location: String = ""
+)
+
+fun CharacterResponse.toDomain(): CharacterModel = CharacterModel(
+    id = this.id,
+    status = this.status,
+    image = this.image,
+    name = this.name,
+    origin = this.origin,
+    location = this.location,
+    gender = this.gender,
+    species = this.species
 )

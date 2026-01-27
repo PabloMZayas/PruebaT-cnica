@@ -1,4 +1,4 @@
-package com.veracruzensei.technicalmorty.ui.characters
+package com.veracruzensei.technicalmorty.domain.model
 
 data class CharacterModel(
     val id: String = "",

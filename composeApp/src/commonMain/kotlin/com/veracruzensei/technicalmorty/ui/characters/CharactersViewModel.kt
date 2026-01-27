@@ -1,4 +1,7 @@
 package com.veracruzensei.technicalmorty.ui.characters
 
-class CharactersViewModel {
+import androidx.lifecycle.ViewModel
+
+class CharactersViewModel: ViewModel() {
+
 }
