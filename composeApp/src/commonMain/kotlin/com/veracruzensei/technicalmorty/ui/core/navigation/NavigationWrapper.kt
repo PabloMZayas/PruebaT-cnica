@@ -9,6 +9,7 @@ import com.veracruzensei.technicalmorty.domain.model.CharacterModel
 import com.veracruzensei.technicalmorty.ui.core.bottomnavigation.CharacterDetail
 import com.veracruzensei.technicalmorty.ui.detail.CharacterDetailScreen
 import com.veracruzensei.technicalmorty.ui.home.HomeScreen
+import com.veracruzensei.technicalmorty.ui.login.LoginScreen
 import kotlinx.serialization.json.Json
 
 @Composable
@@ -16,7 +17,7 @@ fun NavigationWrapper() {
 
     val mainNavController = rememberNavController()
 
-    NavHost(navController = mainNavController, startDestination = Home) {
+    NavHost(navController = mainNavController, startDestination = Login) {
         composable<Home> {
             HomeScreen(mainNavController = mainNavController)
         }
@@ -26,6 +27,11 @@ fun NavigationWrapper() {
             CharacterDetailScreen(
                 characterModel = characterModel,
                 onBack = { mainNavController.popBackStack() }
+            )
+        }
+        composable<Login> {
+            LoginScreen(
+                navigateToHome = { mainNavController.navigate(Home) }
             )
         }
     }

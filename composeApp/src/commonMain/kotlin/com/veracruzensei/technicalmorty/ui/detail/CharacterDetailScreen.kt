@@ -2,7 +2,6 @@ package com.veracruzensei.technicalmorty.ui.detail
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,13 +25,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.tuempresa.tuapp.generated.resources.Res
+import com.tuempresa.tuapp.generated.resources.icon_back
+import com.veracruzensei.technicalmorty.domain.model.CharacterModel
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import coil3.compose.AsyncImage
-import com.tuempresa.tuapp.generated.resources.icon_back
-import com.veracruzensei.technicalmorty.domain.model.CharacterModel
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
@@ -41,8 +40,7 @@ fun CharacterDetailScreen(
     onBack: () -> Unit = {}
 ) {
 
-    val characterDetailViewModel = koinViewModel<CharacterDetailViewModel>()
-    val state by characterDetailViewModel.state.collectAsState()
+    koinViewModel<CharacterDetailViewModel>()
 
     Scaffold(
         topBar = { TopAppBarDetailScreen(onBack) }
@@ -143,6 +141,7 @@ fun SpeciesCharacter(species: String) {
 @Composable
 fun TopAppBarDetailScreen(onBack: () -> Unit) {
     TopAppBar(
+        modifier = Modifier.padding(end = 32.dp),
         title = { TextCharacterDetail() },
         navigationIcon = { BackButton(onBack) }
     )
@@ -152,8 +151,8 @@ fun TopAppBarDetailScreen(onBack: () -> Unit) {
 fun NameCharacter(name: String) {
     Text(
         text = name,
-        fontWeight = FontWeight.Bold,
-        fontSize = 22.sp
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 18.sp
     )
 }
 
