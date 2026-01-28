@@ -30,30 +30,17 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import coil3.compose.AsyncImage
 import com.tuempresa.tuapp.generated.resources.icon_back
+import com.veracruzensei.technicalmorty.domain.model.CharacterModel
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
 fun CharacterDetailScreen(
+    characterModel: CharacterModel,
     onBack: () -> Unit = {}
 ) {
 
     val characterDetailViewModel = koinViewModel<CharacterDetailViewModel>()
     val state by characterDetailViewModel.state.collectAsState()
-
-    /*Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp)
-            .padding(top = 32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.size(20.dp))
-        state.characterModel?.let { ImageCharacter(it.image) }
-        state.characterModel?.let { NameCharacter(it.name) }
-        state.characterModel?.let { SpeciesCharacter(it.species) }
-        state.characterModel?.let { GenderCharacter(it.gender) }
-        //OtherCharacterInfo()
-    }*/
 
     Scaffold(
         topBar = { TopAppBarDetailScreen(onBack) }
@@ -65,11 +52,11 @@ fun CharacterDetailScreen(
                 .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            state.characterModel?.let { ImageCharacter(it.image) }
+            ImageCharacter(characterModel.image)
             Spacer(modifier = Modifier.size(20.dp))
-            state.characterModel?.let { NameCharacter(it.name) }
-            state.characterModel?.let { SpeciesCharacter(it.species) }
-            state.characterModel?.let { GenderCharacter(it.gender) }
+            NameCharacter(characterModel.name)
+            SpeciesCharacter(characterModel.species)
+            GenderCharacter(characterModel.gender)
             //OtherCharacterInfo()
         }
     }

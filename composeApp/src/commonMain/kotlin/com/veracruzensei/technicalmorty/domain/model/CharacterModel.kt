@@ -1,5 +1,8 @@
 package com.veracruzensei.technicalmorty.domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class CharacterModel(
     val id: Int = 1,
     val status: String = "",
