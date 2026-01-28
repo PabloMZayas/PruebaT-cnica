@@ -1,7 +1,9 @@
 package com.veracruzensei.technicalmorty.ui.detail
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,9 +16,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,6 +30,8 @@ import coil3.compose.AsyncImage
 import com.tuempresa.tuapp.generated.resources.Res
 import com.tuempresa.tuapp.generated.resources.icon_back
 import com.veracruzensei.technicalmorty.domain.model.CharacterModel
+import com.veracruzensei.technicalmorty.ui.core.colors.BackgroundPrimaryColor
+import com.veracruzensei.technicalmorty.ui.core.colors.FontPrimaryColor
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -43,14 +46,19 @@ fun CharacterDetailScreen(
     koinViewModel<CharacterDetailViewModel>()
 
     Scaffold(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(BackgroundPrimaryColor),
         topBar = { TopAppBarDetailScreen(onBack) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
+                .padding(paddingValues)
+                .background(BackgroundPrimaryColor)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp)
-                .padding(paddingValues)
+                //.padding(paddingValues)
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -85,12 +93,14 @@ fun TextEpisodes(episodes: List<String>) {
     Text(
         text = "Episodes",
         fontSize = 18.sp,
-        fontWeight = FontWeight.SemiBold
+        fontWeight = FontWeight.SemiBold,
+        color = FontPrimaryColor
     )
     episodes.forEach {
         Text(
             text = it,
             fontSize = 16.sp,
+            color = FontPrimaryColor
         )
     }
 }
@@ -100,11 +110,13 @@ fun TextLocation(locationName: String) {
     Text(
         text = "Last known location",
         fontSize = 18.sp,
-        fontWeight = FontWeight.SemiBold
+        fontWeight = FontWeight.SemiBold,
+        color = FontPrimaryColor
     )
     Text(
         text = locationName,
         fontSize = 16.sp,
+        color = FontPrimaryColor
     )
 }
 
@@ -113,11 +125,13 @@ fun TextOrigin(originName: String) {
     Text(
         text = "Origin",
         fontSize = 18.sp,
-        fontWeight = FontWeight.SemiBold
+        fontWeight = FontWeight.SemiBold,
+        color = FontPrimaryColor
     )
     Text(
         text = originName,
         fontSize = 16.sp,
+        color = FontPrimaryColor
     )
 }
 
@@ -125,7 +139,8 @@ fun TextOrigin(originName: String) {
 fun GenderCharacter(gender: String) {
     Text(
         text = gender,
-        fontSize = 16.sp
+        fontSize = 16.sp,
+        color = FontPrimaryColor
     )
 }
 
@@ -133,7 +148,8 @@ fun GenderCharacter(gender: String) {
 fun SpeciesCharacter(species: String) {
     Text(
         text = species,
-        fontSize = 16.sp
+        fontSize = 16.sp,
+        color = FontPrimaryColor
     )
 }
 
@@ -141,9 +157,12 @@ fun SpeciesCharacter(species: String) {
 @Composable
 fun TopAppBarDetailScreen(onBack: () -> Unit) {
     TopAppBar(
-        modifier = Modifier.padding(end = 32.dp),
+        modifier = Modifier,
         title = { TextCharacterDetail() },
-        navigationIcon = { BackButton(onBack) }
+        navigationIcon = { BackButton(onBack) },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = BackgroundPrimaryColor
+        )
     )
 }
 
@@ -152,7 +171,8 @@ fun NameCharacter(name: String) {
     Text(
         text = name,
         fontWeight = FontWeight.SemiBold,
-        fontSize = 18.sp
+        fontSize = 18.sp,
+        color = FontPrimaryColor
     )
 }
 
@@ -171,7 +191,8 @@ fun TextCharacterDetail() {
     Text(
         modifier = Modifier.fillMaxWidth(),
         text = "Character Details",
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
+        color = FontPrimaryColor
     )
 }
 
@@ -182,7 +203,8 @@ fun BackButton(onBack: () -> Unit = {}) {
     ) {
         Icon(
             painter = painterResource(Res.drawable.icon_back),
-            contentDescription = "back button"
+            contentDescription = "back button",
+            tint = FontPrimaryColor
         )
     }
 }

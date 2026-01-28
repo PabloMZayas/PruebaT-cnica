@@ -1,6 +1,8 @@
 package com.veracruzensei.technicalmorty.ui.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +17,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -27,9 +31,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tuempresa.tuapp.generated.resources.Res
+import com.tuempresa.tuapp.generated.resources.image_black_door
 import com.tuempresa.tuapp.generated.resources.image_white_door
+import com.veracruzensei.technicalmorty.ui.core.colors.BackgroundPrimaryColor
 import com.veracruzensei.technicalmorty.ui.core.colors.ButtonColor
 import com.veracruzensei.technicalmorty.ui.core.colors.FontPrimaryColor
+import com.veracruzensei.technicalmorty.ui.core.colors.UnfocusedContainerColorTextField
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -62,6 +69,7 @@ fun LoginScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(BackgroundPrimaryColor)
                 .padding(it)
         ) {
             ImageDoor()
@@ -112,15 +120,26 @@ fun ButtonLogin(
 
 @Composable
 fun InputTextPassword(
-    password: String ,
+    password: String,
     onValueChange: (String) -> Unit
 ) {
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         value = password,
         onValueChange = { onValueChange(it) },
-        placeholder = { Text("Password") },
-        visualTransformation = PasswordVisualTransformation()
+        placeholder = {
+            Text(
+                text = "Password",
+                color = FontPrimaryColor.copy(0.5f)
+            )
+        },
+        //visualTransformation = PasswordVisualTransformation(),
+        colors = TextFieldDefaults.colors(
+            focusedTextColor = FontPrimaryColor,
+            unfocusedTextColor = FontPrimaryColor.copy(0.5f),
+            unfocusedContainerColor = UnfocusedContainerColorTextField,
+            focusedContainerColor = UnfocusedContainerColorTextField
+        )
     )
 }
 
@@ -133,7 +152,18 @@ fun InputTextUser(
         modifier = Modifier.fillMaxWidth(),
         value = user,
         onValueChange = { onValueChange(it) },
-        placeholder = { Text("Email/Username") }
+        placeholder = {
+            Text(
+                text = "Email/Username",
+                color = FontPrimaryColor.copy(0.5f)
+            )
+        },
+        colors = TextFieldDefaults.colors(
+            focusedTextColor = FontPrimaryColor,
+            unfocusedTextColor = FontPrimaryColor.copy(0.5f),
+            unfocusedContainerColor = UnfocusedContainerColorTextField,
+            focusedContainerColor = UnfocusedContainerColorTextField
+        )
     )
 }
 
@@ -144,7 +174,8 @@ fun TextWelcomeToApp() {
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center,
         fontSize = 22.sp,
-        fontWeight = FontWeight.SemiBold
+        fontWeight = FontWeight.SemiBold,
+        color = FontPrimaryColor
     )
 }
 
@@ -152,7 +183,10 @@ fun TextWelcomeToApp() {
 fun ImageDoor() {
     Image(
         modifier = Modifier.fillMaxWidth(),
-        painter = painterResource(Res.drawable.image_white_door),
+        painter = painterResource(
+            if (isSystemInDarkTheme()) Res.drawable.image_black_door
+            else Res.drawable.image_white_door
+        ),
         contentDescription = "image door"
     )
 }

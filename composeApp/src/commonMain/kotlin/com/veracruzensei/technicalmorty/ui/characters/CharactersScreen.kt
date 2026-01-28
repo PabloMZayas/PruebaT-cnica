@@ -1,5 +1,6 @@
 package com.veracruzensei.technicalmorty.ui.characters
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,6 +46,9 @@ import com.tuempresa.tuapp.generated.resources.icon_filters
 import com.tuempresa.tuapp.generated.resources.icon_menu_vertical
 import com.tuempresa.tuapp.generated.resources.icon_search
 import com.veracruzensei.technicalmorty.domain.model.CharacterModel
+import com.veracruzensei.technicalmorty.ui.core.colors.BackgroundPrimaryColor
+import com.veracruzensei.technicalmorty.ui.core.colors.FontPrimaryColor
+import com.veracruzensei.technicalmorty.ui.core.colors.UnfocusedContainerColorTextField
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -59,11 +63,17 @@ fun CharactersScreen(
     val characters = state.characters.collectAsLazyPagingItems()
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(BackgroundPrimaryColor)
+            .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         HeaderCharacters()
-        SearchBarCharacters()
+        SearchBarCharacters(
+            query = state.query,
+            onQueryChange = { query -> charactersViewModel.updateQuery(query) }
+        )
         Spacer(modifier = Modifier.size(16.dp))
         CharactersGridList(
             characters = characters,
@@ -150,7 +160,8 @@ fun CharacterStatus(status: String) {
     Text(
         text = status,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp
+        fontSize = 14.sp,
+        color = FontPrimaryColor
     )
 }
 
@@ -159,7 +170,8 @@ fun CharacterName(name: String) {
     Text(
         text = name,
         fontWeight = FontWeight.Bold,
-        fontSize = 16.sp
+        fontSize = 16.sp,
+        color = FontPrimaryColor
     )
 }
 
@@ -182,7 +194,8 @@ fun IconButtonMenuVertical() {
         Icon(
             painter = painterResource(Res.drawable.icon_menu_vertical),
             contentDescription = "icon_menu_vertical",
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(24.dp),
+            tint = FontPrimaryColor
         )
     }
 }
@@ -194,7 +207,8 @@ fun TextCharacters(modifier: Modifier) {
         text = "Characters",
         textAlign = TextAlign.Center,
         fontWeight = FontWeight.Bold,
-        fontSize = 18.sp
+        fontSize = 18.sp,
+        color = FontPrimaryColor
     )
 }
 
@@ -206,24 +220,26 @@ fun IconButtonFilters() {
         Icon(
             painter = painterResource(Res.drawable.icon_filters),
             contentDescription = "icon_filters",
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(24.dp),
+            tint = FontPrimaryColor
         )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBarCharacters(query: String = "") {
+fun SearchBarCharacters(
+    query: String,
+    onQueryChange: (String) -> Unit
+) {
     SearchBar(
         modifier = Modifier
-            .clip(
-                shape = RoundedCornerShape(8.dp)
-            )
+            .clip(shape = RoundedCornerShape(8.dp))
             .fillMaxWidth(),
         inputField = {
             SearchBarDefaults.InputField(
                 query = query,
-                onQueryChange = { },
+                onQueryChange = { onQueryChange(it) },
                 onSearch = { },
                 expanded = false,
                 onExpandedChange = {},
@@ -241,7 +257,11 @@ fun SearchBarCharacters(query: String = "") {
         expanded = false,
         onExpandedChange = {},
         content = {},
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
+        colors = SearchBarDefaults.colors(
+            containerColor = UnfocusedContainerColorTextField,
+            dividerColor = Color.LightGray
+        )
     )
 }
 

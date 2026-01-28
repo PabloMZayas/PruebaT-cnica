@@ -36,8 +36,8 @@ class LoginViewModel: ViewModel() {
     fun checkCredentials() {
         val rightUser = "usuario"
         val rightPassword = "contraseña"
-        val inputUser = _state.value.user
-        val inputPassword = _state.value.password
+        val inputUser = _state.value.user.trim()
+        val inputPassword = _state.value.password.trim()
 
         viewModelScope.launch {
             if (inputUser == rightUser && inputPassword == rightPassword) {
